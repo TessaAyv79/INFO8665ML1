@@ -19,13 +19,13 @@ lint:
   enabled:
     - bandit@1.7.9
     - black@24.4.2
-    - checkov@3.2.144
+    - checkov@3.2.156
     - git-diff-check
     - isort@5.13.2
     - oxipng@9.1.1
     - prettier@3.3.2
-    - ruff@0.4.10
-    - trufflehog@3.78.2
+    - ruff@0.5.0
+    - trufflehog@3.79.0
 actions:
   disabled:
     - git-lfs

@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: StockSeeker",
+            "type": "python",
+            "request": "launch",
+            "program": "C:/Users/Admin/Documents/MLAI/INFO8665ML/project2/StockSeeker.py",
+            "console": "integratedTerminal",
+            "pythonPath": "C:/Users/Admin/Documents/MLAI/venv/CSCN8010_clascis_ml/Scripts/python.exe",
+            "env": {
+                "TF_ENABLE_ONEDNN_OPTS": "0"
+            }
+        }
+    ]
+}
