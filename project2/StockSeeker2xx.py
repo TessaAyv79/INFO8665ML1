@@ -47,45 +47,50 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, mean_absolute_percentage_error
 import time
 import matplotlib.dates as mdates
-import logging 
 import os
-# import ibm_db
-# from db_connection import connect_to_db2
-# from db_operations_user import save_data_to_db2  # Import the function(s) you need
-# from project2.db_operations_ import save_data_to_db2, load_data_from_db2
- 
-warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
-import matplotlib.dates as mdates
-# Configure logging to output to console
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+import logging
+from datetime import datetime
 
-# Path to the log file
-log_file_path = 'Fake-Apache-Log-Generator/access_log_20240715-173817.log'
+import os
+import logging
+from datetime import datetime
 
-# IP address to search for
-search_ip = '141.187.7.127'
+# Path to the log directory
+log_dir = 'C:/Users/Admin/Documents/MLAI/INFO8665ML1/project2/Fake-Apache-Log-Generator'
 
-# Check if the log file exists
-if not os.path.exists(log_file_path):
-    logging.error(f'Log file "{log_file_path}" does not exist')
+# Get today's date in YYYYMMDD format for the log file base name
+today_datex = datetime.now().strftime('%Y%m%d')
+
+# Check if a log file for today exists
+existing_files = [f for f in os.listdir(log_dir) if f.startswith(f'access_log_{today_datex}') and f.endswith('.log')]
+
+# Determine the log file name with timestamp if necessary
+if existing_files:
+    # If there are existing files, use a timestamp to ensure uniqueness
+    today_date = datetime.now().strftime('%Y%m%d-%H%M%S')
 else:
-    # Open and read the log file
-    try:
-        with open(log_file_path, 'r') as file:
-            for line in file:
-                if search_ip in line:
-                    logging.info(line.strip())
-    except IOError as e:
-        logging.error(f'Error reading log file: {str(e)}')
+    # If no files exist for today, just use the base date
+    today_date = today_datex
 
+log_file_name = f'access_log_{today_date}.log'
+log_file_path = os.path.join(log_dir, log_file_name)
 
-logger = logging.getLogger(__name__)
+# Check if the log file exists, create if not
+if not os.path.exists(log_file_path):
+    open(log_file_path, 'w').close()
+    print(f'Created log file: {log_file_path}')  # Debug print to check if file is created
+
+# Configure logging to output to file and console
+logging.basicConfig(level=logging.INFO, 
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    handlers=[logging.FileHandler(log_file_path), logging.StreamHandler()])
+
+print(f'Log file path: {log_file_path}')  # Debug print to check the path
 
 # Example log messages
-logger.info('Application started')
-logger.info('Performing some tasks...')
-logger.info('Application finished')
-# Configure logging
+logging.info('Application started')
+logging.info('Performing some tasks...')
+logging.info('Application finished')
 # logging.basicConfig(level=logging.INFO,
 #                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
 #                     handlers=[logging.FileHandler('app.log'),

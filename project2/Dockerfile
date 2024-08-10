@@ -5,7 +5,8 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # Copy the current directory contents into the container at /app
-COPY . /app
+COPY requirements.txt .
+COPY StockSeeker_streamlit.py .
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
@@ -14,4 +15,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 8501
 
 # Streamlit uygulamasını başlat
-CMD ["streamlit", "run", "StockSeeker2xx.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "StockSeeker_streamlit.py", "--server.port=8501", "--server.address=0.0.0.0"]
+
+#docker build -t stockseeker-app .
+#docker run -p 8502:8502 stockseeker-app
+# Docker image oluştur
+#docker build -t my-flask-app .
+# Docker container başlat
+#docker run -p 8502:8502 flask_api

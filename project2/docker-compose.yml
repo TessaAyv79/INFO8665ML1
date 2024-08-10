@@ -1,13 +1,22 @@
-version: '3.8'
+version: '3'
 services:
-  app:
-    build: .
+  flask-api:
+    build:
+      context: .
+      dockerfile: Dockerfile-flask
     ports:
       - "8501:8501"
-    environment:
-      - NAME=World
     networks:
-      - app-network
+      - mynetwork
+
+  stockseeker-streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile-streamlit
+    ports:
+      - "8502:8502"
+    networks:
+      - mynetwork
+
 networks:
-  app-network:
-    driver: bridge
+  mynetwork:
