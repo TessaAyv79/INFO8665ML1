@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Streamlit Debugger: StockSeeker",
+            "type": "python",
+            "request": "launch",
+            "program": "C:/Users/Admin/Documents/MLAI/venv/CSCN8010_clascis_ml/Scripts/streamlit.exe",
+            "args": [
+                "run",
+                "C:/Users/Admin/Documents/MLAI/INFO8665ML/project2/StockSeeker.py"
+                //"C:/Users/Admin/Documents/MLAI/INFO8665ML/project2/app.py"
+            ],
+            "console": "integratedTerminal",
+            "env": {
+                "TF_ENABLE_ONEDNN_OPTS": "0"
+            }
+        }
+    ]
+}
