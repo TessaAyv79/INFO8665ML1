@@ -21,75 +21,75 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 def test():
     return jsonify({"status": "success", "message": "Test endpoint reached."})
 
-@app.route('/predict', methods=['GET', 'POST'])
-def predict():
-    data = request.json
-    # Tahmin mantığınızı buraya ekleyin
-    return jsonify({"message": "İstek alındı", "data": data})
-
-# @app.route('/predict', methods=['POST'])
+# @app.route('/predict', methods=['GET', 'POST'])
 # def predict():
-#     logging.info("Predict endpoint was called.")
-#     try:
-#         if request.content_type != 'application/json':
-#             logging.error(f"Expected application/json but got {request.content_type}")
-#             return jsonify({"status": "error", "message": "Unsupported Media Type"}), 415
+#     data = request.json
+#     # Tahmin mantığınızı buraya ekleyin
+#     return jsonify({"message": "İstek alındı", "data": data})
 
-#         # Get JSON data from request
-#         data = request.get_json()
-#         logging.debug(f"Received data: {data}")
+@app.route('/predict', methods=['POST'])
+def predict():
+    logging.info("Predict endpoint was called.")
+    try:
+        if request.content_type != 'application/json':
+            logging.error(f"Expected application/json but got {request.content_type}")
+            return jsonify({"status": "error", "message": "Unsupported Media Type"}), 415
 
-#         if not data:
-#             return jsonify({"status": "error", "message": "No JSON data received"}) 
+        # Get JSON data from request
+        data = request.get_json()
+        logging.debug(f"Received data: {data}")
 
-#         selected_stock = data.get('selected_stock')
-#         start_date = pd.to_datetime(data.get('start_date'))
-#         end_date = pd.to_datetime(data.get('end_date'))
+        if not data:
+            return jsonify({"status": "error", "message": "No JSON data received"}) 
+
+        selected_stock = data.get('selected_stock')
+        start_date = pd.to_datetime(data.get('start_date'))
+        end_date = pd.to_datetime(data.get('end_date'))
         
-#         logging.debug(f"Selected stock: {selected_stock}, Start date: {start_date}, End date: {end_date}")
+        logging.debug(f"Selected stock: {selected_stock}, Start date: {start_date}, End date: {end_date}")
 
-#         if not selected_stock or not start_date or not end_date:
-#             return jsonify({"status": "error", "message": "Required fields are missing"})
+        if not selected_stock or not start_date or not end_date:
+            return jsonify({"status": "error", "message": "Required fields are missing"})
 
-#         # Download data
-#         df = yf.download(selected_stock, start=start_date, end=end_date)
-#         logging.debug(f"Downloaded data: {df.head()}")
+        # Download data
+        df = yf.download(selected_stock, start=start_date, end=end_date)
+        logging.debug(f"Downloaded data: {df.head()}")
 
-#         if df.empty:
-#             logging.warning("No data found for the selected stock.")
-#             return jsonify({"status": "error", "message": "No data found"})
+        if df.empty:
+            logging.warning("No data found for the selected stock.")
+            return jsonify({"status": "error", "message": "No data found"})
 
-#         # Data preprocessing and feature engineering
-#         df = preprocess_data(df)
-#         df = feature_engineering(df)
+        # Data preprocessing and feature engineering
+        df = preprocess_data(df)
+        df = feature_engineering(df)
         
-#         # Logging intermediate data
-#         logging.debug(f"Preprocessed data: {df.head()}")
+        # Logging intermediate data
+        logging.debug(f"Preprocessed data: {df.head()}")
 
-#         # Create and fit the pipeline
-#         pipeline = create_pipeline()
-#         data = df[['Close']]
-#         dataset = data
-#         training_data_len = int(np.ceil(len(dataset) * .95))
+        # Create and fit the pipeline
+        pipeline = create_pipeline()
+        data = df[['Close']]
+        dataset = data
+        training_data_len = int(np.ceil(len(dataset) * .95))
 
-#         pipeline.named_steps['data_prep'].fit(dataset)
+        pipeline.named_steps['data_prep'].fit(dataset)
 
-#         X_train, y_train = pipeline.named_steps['sequence_gen'].transform(
-#             pipeline.named_steps['data_prep'].transform(dataset)
-#         )
-#         logging.debug(f"Training data X shape: {X_train.shape}, y shape: {y_train.shape}")
+        X_train, y_train = pipeline.named_steps['sequence_gen'].transform(
+            pipeline.named_steps['data_prep'].transform(dataset)
+        )
+        logging.debug(f"Training data X shape: {X_train.shape}, y shape: {y_train.shape}")
 
-#         pipeline.named_steps['lstm_model'].fit(X_train, y_train)
-#         logging.info("Model trained successfully.")
-#         return jsonify({"status": "success", "message": "Model trained successfully"})
+        pipeline.named_steps['lstm_model'].fit(X_train, y_train)
+        logging.info("Model trained successfully.")
+        return jsonify({"status": "success", "message": "Model trained successfully"})
 
-#     except ValueError as ve:
-#         logging.error(f"Value error: {ve}")
-#         return jsonify({"status": "error", "message": str(ve)})
+    except ValueError as ve:
+        logging.error(f"Value error: {ve}")
+        return jsonify({"status": "error", "message": str(ve)})
 
-#     except Exception as e:
-#         logging.error(f"Error occurred: {e}")
-#         return jsonify({"status": "error", "message": str(e)})
+    except Exception as e:
+        logging.error(f"Error occurred: {e}")
+        return jsonify({"status": "error", "message": str(e)})
 
 # Define your other endpoints here
 @app.route('/train', methods=['GET', 'POST'])
@@ -161,4 +161,4 @@ class LSTMModel:
 
 if __name__ == "__main__":
     logging.info("Starting Flask application!")
-    app.run(host="127.0.0.2", port=850x, debug=True)
+    app.run(host="127.0.0.0", port=5000, debug=True)
