@@ -56,7 +56,24 @@ import logging
 from datetime import datetime
 
 # Path to the log directory
-log_dir = 'C:/Users/Admin/Documents/MLAI/INFO8665ML1/project2/Fake-Apache-Log-Generator'
+#log_dir = r'C:\Users\Admin\Documents\MLAI\INFO8665ML1\project2\Fake-Apache-Log-Generator'
+#log_dir = '/app/Fake-Apache-Log-Generator'
+# log_dir = '/app/Fake-Apache-Log-Generator'
+# Dosya yolu belirleme
+if os.getenv('DOCKER_ENV'):
+    log_dir = '/app/Fake-Apache-Log-Generator'
+else:
+    log_dir = r'C:\Users\Admin\Documents\MLAI\INFO8665ML1\project2\Fake-Apache-Log-Generator'
+if os.path.exists(log_dir):
+    print(f"Directory exists: {log_dir}")
+    print("Files in directory:")
+    for f in os.listdir(log_dir):
+        print(f"  - {f}")
+else:
+    print(f"Directory does not exist: {log_dir}")
+  
+# log_dir = '/app/Fake-Apache-Log-Generator'
+# print(os.path.exists(log_dir))
 
 # Get today's date in YYYYMMDD format for the log file base name
 today_datex = datetime.now().strftime('%Y%m%d')
@@ -195,9 +212,10 @@ db_port = os.getenv('DB_PORT')
 # Streamlit App
 st.header("STOCK SEEKER WEB APP")
 
-# Adding a video
-st.subheader("Overview Video")
-st.video(r"C:\Users\Admin\Documents\MLAI\INFO8665ML1\project3\ClipforStocSeekerWeb-highquaalit.mp4")
+# # Adding a video
+# st.subheader("Overview Video")
+# # st.video(r"C:\Users\Admin\Documents\MLAI\INFO8665ML1\project2\ClipforStocSeekerWeb-highquaalit.mp4")
+# st.video("ClipforStocSeekerWeb-highquaalit.mp4")
 
 # Main content area
 st.subheader("Stock Analysis Section")
@@ -248,7 +266,7 @@ def validate_period(prd, valid_periods):
 valid_periods = [f'{i}y' for i in range(1, 101)] + ['max']
 valid_prd = validate_period(prd, valid_periods)
 logging.info('prd =', prd)
-logging.info('valid_prd=', valid_prd)
+# logging.info('valid_prd=', valid_prd)
 
 
 period = n_years * 365

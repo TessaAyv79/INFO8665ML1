@@ -63,8 +63,12 @@ import logging
 from datetime import datetime
 
 # Path to the log directory
-log_dir = 'C:/Users/Admin/Documents/MLAI/INFO8665ML1/project2/Fake-Apache-Log-Generator'
-
+#log_dir = 'C:/Users/Admin/Documents/MLAI/INFO8665ML1/project2/Fake-Apache-Log-Generator'
+log_dir = '/app/Fake-Apache-Log-Generator'
+# Adding a video
+st.subheader("Overview Video")
+# st.video(r"C:\Users\Admin\Documents\MLAI\INFO8665ML1\project2\ClipforStocSeekerWeb-highquaalit.mp4")
+st.video("ClipforStocSeekerWeb-highquaalit.mp4")
 # Get today's date in YYYYMMDD format for the log file base name
 today_datex = datetime.now().strftime('%Y%m%d')
 
@@ -353,7 +357,7 @@ def display_additional_information(selected_stock, df, validate_period):
                 display_predicted_prices(selected_stock, start_date, end_date)
   
 def get_predictions(ticker, start_date, end_date):
-    url = 'http://127.0.0.0:8501/api/predict'
+    url = 'http://127.0.0.0:5000/predict'
     payload = {
         'ticker': ticker,
         'start_date': start_date.strftime('%Y-%m-%d'),
